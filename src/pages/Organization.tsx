@@ -40,6 +40,24 @@ const Organization = () => {
                 <TabsTrigger value="graph">Graph View</TabsTrigger>
                 <TabsTrigger value="list">List View</TabsTrigger>
               </TabsList>
+            
+              <div className="overflow-auto border rounded-md p-4 min-h-[500px] max-h-[600px] mt-2">
+                <TabsContent value="tree" className="mt-0">
+                  <OrgTree data={organizationData} />
+                </TabsContent>
+                
+                <TabsContent value="graph" className="mt-0">
+                  <div className="flex items-center justify-center h-[500px]">
+                    <p className="text-muted-foreground">Graph view to be implemented</p>
+                  </div>
+                </TabsContent>
+                
+                <TabsContent value="list" className="mt-0">
+                  <div className="flex items-center justify-center h-[500px]">
+                    <p className="text-muted-foreground">List view to be implemented</p>
+                  </div>
+                </TabsContent>
+              </div>
             </Tabs>
             
             <div className="flex items-center space-x-2">
@@ -55,24 +73,6 @@ const Organization = () => {
                 <Filter className="h-4 w-4" />
               </Button>
             </div>
-          </div>
-          
-          <div className="overflow-auto border rounded-md p-4 min-h-[500px] max-h-[600px]">
-            <TabsContent value="tree" className="mt-0">
-              <OrgTree data={organizationData} />
-            </TabsContent>
-            
-            <TabsContent value="graph" className="mt-0">
-              <div className="flex items-center justify-center h-[500px]">
-                <p className="text-muted-foreground">Graph view to be implemented</p>
-              </div>
-            </TabsContent>
-            
-            <TabsContent value="list" className="mt-0">
-              <div className="flex items-center justify-center h-[500px]">
-                <p className="text-muted-foreground">List view to be implemented</p>
-              </div>
-            </TabsContent>
           </div>
         </CardContent>
       </Card>

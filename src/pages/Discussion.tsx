@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -9,7 +8,37 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { MessageSquare, Plus, ThumbsUp, MessageCircle, Share, Bookmark, Filter } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
-// Mock discussion topics
+const employeesData = [
+  { 
+    id: 1, 
+    name: 'John Doe', 
+    position: 'CEO', 
+    department: 'Executive', 
+    image: '/placeholder.svg' 
+  },
+  { 
+    id: 2, 
+    name: 'Jane Smith', 
+    position: 'CTO', 
+    department: 'Technology', 
+    image: '/placeholder.svg' 
+  },
+  { 
+    id: 3, 
+    name: 'Mike Johnson', 
+    position: 'Project Manager', 
+    department: 'Product', 
+    image: '/placeholder.svg' 
+  },
+  { 
+    id: 4, 
+    name: 'Sarah Brown', 
+    position: 'Senior Developer', 
+    department: 'Engineering', 
+    image: '/placeholder.svg' 
+  }
+];
+
 const discussionTopics = [
   {
     id: 1,
@@ -52,7 +81,6 @@ const discussionTopics = [
   }
 ];
 
-// Mock comments
 const discussionComments = [
   {
     id: 1,

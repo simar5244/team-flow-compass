@@ -46,6 +46,64 @@ const Heatmap = () => {
                 <TabsTrigger value="network">Network</TabsTrigger>
                 <TabsTrigger value="metrics">Metrics</TabsTrigger>
               </TabsList>
+            
+              <div className="border rounded-md p-4 min-h-[600px] mt-4">
+                <TabsContent value="heatmap">
+                  <div className="overflow-auto">
+                    <table className="w-full min-w-[600px]">
+                      <thead>
+                        <tr>
+                          <th className="p-2 text-left font-medium"></th>
+                          {entities.map(entity => (
+                            <th key={entity} className="p-2 text-sm font-medium rotate-45 h-16 align-bottom">
+                              <div className="origin-bottom-left ml-2">{entity}</div>
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {entities.map(fromEntity => (
+                          <tr key={fromEntity}>
+                            <td className="p-2 font-medium border-r">{fromEntity}</td>
+                            {entities.map(toEntity => {
+                              const collaboration = collaborationData.find(
+                                item => item.from === fromEntity && item.to === toEntity
+                              );
+                              const value = collaboration ? collaboration.value : 0;
+                              let bgColor = 'bg-gray-50';
+                              if (value > 0 && value <= 0.3) bgColor = 'bg-blue-100';
+                              else if (value > 0.3 && value <= 0.6) bgColor = 'bg-blue-300';
+                              else if (value > 0.6) bgColor = 'bg-blue-500';
+                              
+                              return (
+                                <td 
+                                  key={`${fromEntity}-${toEntity}`} 
+                                  className={`p-2 text-center ${bgColor} hover:opacity-80 cursor-default transition-opacity`}
+                                  title={`${fromEntity} → ${toEntity}: ${value ? (value * 100).toFixed(0) + '%' : 'No collaboration'}`}
+                                >
+                                  {value ? (value * 100).toFixed(0) + '%' : ''}
+                                </td>
+                              );
+                            })}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </TabsContent>
+                
+                <TabsContent value="network">
+                  <div className="flex items-center justify-center h-[500px]">
+                    <p className="text-muted-foreground">Network visualization to be implemented</p>
+                  </div>
+                </TabsContent>
+                
+                <TabsContent value="metrics">
+                  <div className="flex items-center justify-center h-[500px]">
+                    <p className="text-muted-foreground">Collaboration metrics to be implemented</p>
+                  </div>
+                </TabsContent>
+              </div>
             </Tabs>
             
             <div className="flex flex-wrap items-center gap-2">
@@ -80,65 +138,6 @@ const Heatmap = () => {
                 <RefreshCw className="h-4 w-4" />
               </Button>
             </div>
-          </div>
-          
-          {/* Heatmap Visualization */}
-          <div className="border rounded-md p-4 min-h-[600px]">
-            <TabsContent value="heatmap" className="mt-0">
-              <div className="overflow-auto">
-                <table className="w-full min-w-[600px]">
-                  <thead>
-                    <tr>
-                      <th className="p-2 text-left font-medium"></th>
-                      {entities.map(entity => (
-                        <th key={entity} className="p-2 text-sm font-medium rotate-45 h-16 align-bottom">
-                          <div className="origin-bottom-left ml-2">{entity}</div>
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {entities.map(fromEntity => (
-                      <tr key={fromEntity}>
-                        <td className="p-2 font-medium border-r">{fromEntity}</td>
-                        {entities.map(toEntity => {
-                          const collaboration = collaborationData.find(
-                            item => item.from === fromEntity && item.to === toEntity
-                          );
-                          const value = collaboration ? collaboration.value : 0;
-                          let bgColor = 'bg-gray-50';
-                          if (value > 0 && value <= 0.3) bgColor = 'bg-blue-100';
-                          else if (value > 0.3 && value <= 0.6) bgColor = 'bg-blue-300';
-                          else if (value > 0.6) bgColor = 'bg-blue-500';
-                          
-                          return (
-                            <td 
-                              key={`${fromEntity}-${toEntity}`} 
-                              className={`p-2 text-center ${bgColor} hover:opacity-80 cursor-default transition-opacity`}
-                              title={`${fromEntity} → ${toEntity}: ${value ? (value * 100).toFixed(0) + '%' : 'No collaboration'}`}
-                            >
-                              {value ? (value * 100).toFixed(0) + '%' : ''}
-                            </td>
-                          );
-                        })}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </TabsContent>
-            
-            <TabsContent value="network" className="mt-0">
-              <div className="flex items-center justify-center h-[500px]">
-                <p className="text-muted-foreground">Network visualization to be implemented</p>
-              </div>
-            </TabsContent>
-            
-            <TabsContent value="metrics" className="mt-0">
-              <div className="flex items-center justify-center h-[500px]">
-                <p className="text-muted-foreground">Collaboration metrics to be implemented</p>
-              </div>
-            </TabsContent>
           </div>
           
           <div className="flex items-center mt-4 text-xs text-muted-foreground">
