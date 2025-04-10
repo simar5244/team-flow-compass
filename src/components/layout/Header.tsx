@@ -1,42 +1,71 @@
 
 import React from 'react';
-import { Bell, Search, HelpCircle } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { getCurrentUser, logout, hasPermission, PERMISSIONS } from '@/utils/auth';
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuLabel, 
+  DropdownMenuSeparator, 
+  DropdownMenuTrigger 
+} from '@/components/ui/dropdown-menu';
+import { User, Settings, LogOut } from 'lucide-react';
 
 const Header = () => {
+  const navigate = useNavigate();
+  const user = getCurrentUser();
+  
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+  
   return (
-    <header className="h-16 border-b border-border bg-background/95 backdrop-blur-sm sticky top-0 z-10">
-      <div className="flex items-center justify-between h-full px-4">
-        <div className="flex items-center w-96">
-          <div className="relative w-full">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input 
-              type="search" 
-              placeholder="Search..." 
-              className="pl-10 bg-muted" 
-            />
-          </div>
+    <header className="border-b">
+      <div className="flex h-16 items-center justify-between px-6">
+        <div className="flex items-center gap-4">
+          <h2 className="text-xl font-semibold">Team Flow Compass</h2>
         </div>
         
-        <div className="flex items-center space-x-4">
-          <Button variant="ghost" size="icon" className="relative">
-            <Bell size={20} />
-            <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-destructive"></span>
-          </Button>
-          
-          <Button variant="ghost" size="icon">
-            <HelpCircle size={20} />
-          </Button>
-          
-          <div className="flex items-center space-x-2">
-            <Avatar>
-              <AvatarImage src="/placeholder.svg" />
-              <AvatarFallback>JD</AvatarFallback>
-            </Avatar>
+        {user.isAuthenticated && (
+          <div className="flex items-center gap-4">
+            {hasPermission(PERMISSIONS.ACCESS_ADMIN_PANEL) && (
+              <Button 
+                variant="outline" 
+                onClick={() => navigate('/admin')}
+              >
+                <Settings className="h-4 w-4 mr-2" />
+                Admin Panel
+              </Button>
+            )}
+            
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="gap-2">
+                  <User className="h-4 w-4" />
+                  {user.email || 'User'}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => navigate('/profile')}>
+                  Profile
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate('/erp-connect')}>
+                  ERP Connection
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout}>
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
-        </div>
+        )}
       </div>
     </header>
   );
